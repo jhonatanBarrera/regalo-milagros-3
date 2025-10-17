@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>¡Feliz Cumpleaños! 🎂</title>
+    <title>Sistema Solar - ¡Feliz Cumpleaños! 🎂</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
         body {
             overflow: hidden;
             background: #000;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
         }
 
         #container {
@@ -32,174 +32,331 @@
 
         #space {
             position: absolute;
-            width: 6000px;
-            height: 6000px;
-            background: #000;
+            width: 5000px;
+            height: 5000px;
+            background: radial-gradient(ellipse at center, #0a0e27 0%, #000000 100%);
             transform-origin: center center;
         }
 
+        /* Estrellas */
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
         }
 
-        /* SOL EN 3D */
+        .star.twinkle {
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* SOL */
         #sun-container {
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
             perspective: 1000px;
+            z-index: 10;
         }
 
         #sun {
             position: relative;
-            width: 400px;
-            height: 400px;
-            transform-style: preserve-3d;
-            animation: rotateSun 30s infinite linear;
-        }
-
-        @keyframes rotateSun {
-            0% { transform: rotateY(-5deg) rotateX(-5deg); }
-            25% { transform: rotateY(5deg) rotateX(-5deg); }
-            50% { transform: rotateY(5deg) rotateX(5deg); }
-            75% { transform: rotateY(-5deg) rotateX(5deg); }
-            100% { transform: rotateY(-5deg) rotateX(-5deg); }
-        }
-
-        .sun-sphere {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, 
+            background: radial-gradient(circle at 35% 35%, 
                 #fff9c4 0%,
-                #ffeb3b 15%,
-                #ffc107 30%,
-                #ff9800 50%,
-                #ff5722 70%,
+                #ffeb3b 20%,
+                #ffc107 40%,
+                #ff9800 60%,
+                #ff5722 80%,
                 #d84315 100%
             );
             box-shadow: 
-                0 0 60px 20px rgba(255, 235, 59, 0.6),
-                0 0 100px 40px rgba(255, 152, 0, 0.4),
-                0 0 140px 60px rgba(255, 87, 34, 0.2),
-                inset -30px -30px 60px rgba(0, 0, 0, 0.3),
-                inset 30px 30px 60px rgba(255, 255, 255, 0.2);
+                0 0 40px 15px rgba(255, 235, 59, 0.8),
+                0 0 80px 30px rgba(255, 152, 0, 0.5),
+                0 0 120px 45px rgba(255, 87, 34, 0.3),
+                inset -20px -20px 40px rgba(0, 0, 0, 0.3),
+                inset 20px 20px 40px rgba(255, 255, 255, 0.2);
+            animation: sunPulse 6s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
         }
 
-        .sun-image {
+        #sun:hover {
+            transform: scale(1.1);
+        }
+
+        #sun img {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
             object-fit: cover;
-            opacity: 1;
+            border-radius: 50%;
             position: relative;
             z-index: 2;
         }
 
-        /* Capas de profundidad del sol */
-        .sun-glow {
-            position: absolute;
-            width: 120%;
-            height: 120%;
-            left: -10%;
-            top: -10%;
-            border-radius: 50%;
-            background: radial-gradient(circle, 
-                rgba(255, 235, 59, 0.4) 0%,
-                rgba(255, 152, 0, 0.2) 40%,
-                transparent 70%
-            );
-            animation: pulse 4s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
+        @keyframes sunPulse {
             0%, 100% { 
-                transform: scale(1);
-                opacity: 0.6;
+                box-shadow: 
+                    0 0 40px 15px rgba(255, 235, 59, 0.8),
+                    0 0 80px 30px rgba(255, 152, 0, 0.5),
+                    0 0 120px 45px rgba(255, 87, 34, 0.3),
+                    inset -20px -20px 40px rgba(0, 0, 0, 0.3),
+                    inset 20px 20px 40px rgba(255, 255, 255, 0.2);
             }
             50% { 
-                transform: scale(1.1);
-                opacity: 1;
+                box-shadow: 
+                    0 0 50px 20px rgba(255, 235, 59, 1),
+                    0 0 100px 40px rgba(255, 152, 0, 0.7),
+                    0 0 150px 60px rgba(255, 87, 34, 0.5),
+                    inset -20px -20px 40px rgba(0, 0, 0, 0.3),
+                    inset 20px 20px 40px rgba(255, 255, 255, 0.2);
             }
         }
 
-        .sun-corona {
+        /* ÓRBITAS */
+        .orbit {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        /* PLANETAS */
+        .planet-orbit-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbit linear infinite;
+        }
+
+        @keyframes orbit {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .planet img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .planet:hover {
+            transform: scale(1.3);
+            z-index: 100;
+            filter: brightness(1.3);
+        }
+
+        .planet::before {
+            content: attr(data-name);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .planet:hover::before {
+            opacity: 1;
+        }
+
+        /* Colores específicos para cada planeta */
+        .mercury { 
+            width: 40px; 
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, #b8b8b8, #6b6b6b);
+            box-shadow: 0 0 15px rgba(184, 184, 184, 0.6), inset -10px -10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .venus { 
+            width: 50px; 
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #ffd89b, #e6a23c);
+            box-shadow: 0 0 20px rgba(255, 216, 155, 0.6), inset -10px -10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .earth { 
+            width: 55px; 
+            height: 55px;
+            background: radial-gradient(circle at 30% 30%, #4dabf7, #1864ab);
+            box-shadow: 0 0 25px rgba(77, 171, 247, 0.8), inset -10px -10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .mars { 
+            width: 45px; 
+            height: 45px;
+            background: radial-gradient(circle at 30% 30%, #ff8787, #c92a2a);
+            box-shadow: 0 0 20px rgba(255, 135, 135, 0.6), inset -10px -10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .jupiter { 
+            width: 90px; 
+            height: 90px;
+            background: radial-gradient(circle at 30% 30%, #f59f00, #d9480f);
+            box-shadow: 0 0 35px rgba(245, 159, 0, 0.8), inset -15px -15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .saturn { 
+            width: 80px; 
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #f5d186, #e6a23c);
+            box-shadow: 0 0 30px rgba(245, 209, 134, 0.7), inset -15px -15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .uranus { 
+            width: 65px; 
+            height: 65px;
+            background: radial-gradient(circle at 30% 30%, #91d5ff, #4098d7);
+            box-shadow: 0 0 25px rgba(145, 213, 255, 0.7), inset -12px -12px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .neptune { 
+            width: 60px; 
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #5c7cfa, #364fc7);
+            box-shadow: 0 0 25px rgba(92, 124, 250, 0.7), inset -12px -12px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Anillo de Saturno */
+        .saturn::after {
+            content: '';
             position: absolute;
             width: 140%;
-            height: 140%;
-            left: -20%;
-            top: -20%;
+            height: 40%;
+            border: 3px solid rgba(245, 209, 134, 0.4);
             border-radius: 50%;
-            background: radial-gradient(circle,
-                transparent 60%,
-                rgba(255, 193, 7, 0.3) 70%,
-                rgba(255, 152, 0, 0.2) 80%,
-                transparent 100%
-            );
-            animation: coronaPulse 6s infinite ease-in-out;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            box-shadow: 0 0 15px rgba(245, 209, 134, 0.3);
         }
 
-        @keyframes coronaPulse {
-            0%, 100% { 
-                transform: scale(1) rotate(0deg);
-                opacity: 0.5;
-            }
-            50% { 
-                transform: scale(1.15) rotate(180deg);
-                opacity: 0.8;
-            }
+        /* MODAL DE GALERÍA */
+        #gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            overflow-y: auto;
+            animation: fadeIn 0.3s;
         }
 
-        /* Llamaradas solares */
-        .solar-flare {
-            position: absolute;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #gallery-modal.active {
+            display: block;
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .modal-title {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 30px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .gallery-item img {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle at var(--x) var(--y),
-                rgba(255, 235, 59, 0.8) 0%,
-                rgba(255, 152, 0, 0.4) 30%,
-                transparent 60%
-            );
-            animation: flare 8s infinite ease-in-out;
-            opacity: 0;
+            object-fit: cover;
         }
 
-        .solar-flare:nth-child(1) { --x: 20%; --y: 30%; animation-delay: 0s; }
-        .solar-flare:nth-child(2) { --x: 70%; --y: 20%; animation-delay: 2s; }
-        .solar-flare:nth-child(3) { --x: 50%; --y: 80%; animation-delay: 4s; }
-        .solar-flare:nth-child(4) { --x: 80%; --y: 60%; animation-delay: 6s; }
-
-        @keyframes flare {
-            0%, 100% { opacity: 0; transform: scale(0.8); }
-            50% { opacity: 0.6; transform: scale(1.2); }
-        }
-
-        /* Textura de superficie solar */
-        .sun-texture {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.3) 2%, transparent 4%),
-                radial-gradient(circle at 75% 35%, rgba(255, 255, 255, 0.2) 3%, transparent 5%),
-                radial-gradient(circle at 45% 65%, rgba(255, 255, 255, 0.25) 2.5%, transparent 4.5%),
-                radial-gradient(circle at 65% 75%, rgba(255, 255, 255, 0.2) 3%, transparent 5%),
-                radial-gradient(circle at 35% 85%, rgba(255, 255, 255, 0.3) 2%, transparent 4%);
-            animation: textureMove 20s infinite linear;
-        }
-
-        @keyframes textureMove {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
+        /* CONTROLES */
         #controls {
             position: fixed;
             top: 20px;
@@ -211,8 +368,8 @@
         }
 
         .btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             color: white;
             padding: 12px 20px;
             border-radius: 10px;
@@ -220,11 +377,13 @@
             font-size: 16px;
             backdrop-filter: blur(10px);
             transition: all 0.3s;
+            font-weight: bold;
         }
 
         .btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
             transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         #message {
@@ -232,13 +391,20 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 215, 0, 0.9);
-            color: #000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             padding: 15px 30px;
-            border-radius: 10px;
+            border-radius: 15px;
             font-size: 20px;
             font-weight: bold;
             z-index: 1000;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-10px); }
         }
 
         #instructions {
@@ -246,21 +412,18 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 25px;
+            border-radius: 10px;
             font-size: 14px;
             z-index: 1000;
             text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         @media (max-width: 768px) {
-            #sun {
-                width: 300px;
-                height: 300px;
-            }
-
             #controls {
                 top: auto;
                 bottom: 80px;
@@ -277,79 +440,189 @@
                 font-size: 16px;
                 padding: 10px 20px;
             }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+                padding: 20px;
+            }
+
+            .modal-title {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="message">¡Feliz Cumpleaños! 🎉✨</div>
+    <div id="message">🎉 ¡Feliz Cumpleaños! ✨</div>
     
     <div id="container">
         <div id="space">
             <div id="sun-container">
-                <div id="sun">
-                    <div class="sun-corona"></div>
-                    <div class="sun-glow"></div>
-                    <div class="sun-sphere">
-                        <div class="solar-flare"></div>
-                        <div class="solar-flare"></div>
-                        <div class="solar-flare"></div>
-                        <div class="solar-flare"></div>
-                        <div class="sun-texture"></div>
-                    </div>
-                </div>
+                <div id="sun" data-name="Sol"></div>
             </div>
         </div>
     </div>
 
     <div id="controls">
         <button class="btn" onclick="resetView()">🏠 Centro</button>
-        <button class="btn" onclick="zoomIn()">➕ Zoom</button>
-        <button class="btn" onclick="zoomOut()">➖ Zoom</button>
+        <button class="btn" onclick="zoomIn()">➕</button>
+        <button class="btn" onclick="zoomOut()">➖</button>
     </div>
 
     <div id="instructions">
-        📱 Arrastra para moverte | 🤏 Pellizca para zoom
+        🪐 Haz clic en un planeta para ver sus fotos | 🖱️ Arrastra para explorar
+    </div>
+
+    <div id="gallery-modal">
+        <div class="modal-header">
+            <div class="modal-title" id="modal-planet-name"></div>
+            <button class="close-btn" onclick="closeGallery()">×</button>
+        </div>
+        <div class="gallery-grid" id="gallery-content"></div>
     </div>
 
     <script>
         const space = document.getElementById('space');
         const container = document.getElementById('container');
+        const sun = document.getElementById('sun');
+        const galleryModal = document.getElementById('gallery-modal');
+        const galleryContent = document.getElementById('gallery-content');
+        const modalPlanetName = document.getElementById('modal-planet-name');
         
         let scale = 1;
-        let translateX = -2600;
-        let translateY = -2600;
+        let translateX = -2100;
+        let translateY = -2100;
         let isDragging = false;
         let startX, startY;
         let lastDistance = 0;
 
-        // Crear estrellas de fondo (fijas, sin parpadeo)
-        for (let i = 0; i < 200; i++) {
+        // Crear estrellas
+        for (let i = 0; i < 300; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            const size = Math.random() * 2 + 0.5;
+            if (Math.random() > 0.7) star.classList.add('twinkle');
+            const size = Math.random() * 2.5 + 0.5;
             star.style.width = size + 'px';
             star.style.height = size + 'px';
-            star.style.left = Math.random() * 6000 + 'px';
-            star.style.top = Math.random() * 6000 + 'px';
-            star.style.opacity = Math.random() * 0.5 + 0.3;
+            star.style.left = Math.random() * 5000 + 'px';
+            star.style.top = Math.random() * 5000 + 'px';
+            star.style.opacity = Math.random() * 0.7 + 0.3;
+            if (star.classList.contains('twinkle')) {
+                star.style.animationDelay = Math.random() * 3 + 's';
+            }
             space.appendChild(star);
         }
 
-        // Cargar imagen del sol (foto1)
-        const sunSphere = document.querySelector('.sun-sphere');
+        // Cargar foto del sol
         const sunImg = document.createElement('img');
-        sunImg.className = 'sun-image';
-        sunImg.src = 'foto1.jpg';
+        sunImg.src = 'fotos/foto1.jpg';
         sunImg.onerror = function() {
-            this.onerror = function() {
-                this.onerror = null;
-            };
-            this.src = 'foto1.png';
+            this.src = 'fotos/foto1.png';
         };
-        sunImg.onload = function() {
-            sunSphere.appendChild(sunImg);
-        };
+        sun.appendChild(sunImg);
 
+        // Configuración de planetas: [nombre, clase, distancia orbital, velocidad, fotos desde-hasta]
+        const planetsConfig = [
+            ['Mercurio', 'mercury', 350, 47, 2, 15],
+            ['Venus', 'venus', 500, 35, 16, 29],
+            ['Tierra', 'earth', 650, 30, 30, 43],
+            ['Marte', 'mars', 800, 24, 44, 57],
+            ['Júpiter', 'jupiter', 1000, 13, 58, 71],
+            ['Saturno', 'saturn', 1200, 9, 72, 85],
+            ['Urano', 'uranus', 1400, 7, 86, 96],
+            ['Neptuno', 'neptune', 1600, 5, 97, 110]
+        ];
+
+        // Crear planetas
+        planetsConfig.forEach((config, index) => {
+            const [name, className, orbitRadius, speed, photoStart, photoEnd] = config;
+            
+            // Crear órbita
+            const orbit = document.createElement('div');
+            orbit.className = 'orbit';
+            orbit.style.width = (orbitRadius * 2) + 'px';
+            orbit.style.height = (orbitRadius * 2) + 'px';
+            space.appendChild(orbit);
+            
+            // Crear contenedor de órbita del planeta
+            const planetOrbitContainer = document.createElement('div');
+            planetOrbitContainer.className = 'planet-orbit-container';
+            planetOrbitContainer.style.width = (orbitRadius * 2) + 'px';
+            planetOrbitContainer.style.height = (orbitRadius * 2) + 'px';
+            planetOrbitContainer.style.animationDuration = speed + 's';
+            planetOrbitContainer.style.animationDelay = -(index * 2) + 's';
+            
+            // Crear planeta
+            const planet = document.createElement('div');
+            planet.className = `planet ${className}`;
+            planet.setAttribute('data-name', name);
+            planet.setAttribute('data-photo-start', photoStart);
+            planet.setAttribute('data-photo-end', photoEnd);
+            planet.style.left = '50%';
+            planet.style.top = '0';
+            planet.style.marginLeft = -(parseInt(planet.style.width) || 50) / 2 + 'px';
+            planet.style.marginTop = '0px';
+            
+            // Cargar foto representativa del planeta
+            const planetImg = document.createElement('img');
+            planetImg.src = `fotos/foto${photoStart}.jpg`;
+            planetImg.onerror = function() {
+                this.src = `fotos/foto${photoStart}.png`;
+            };
+            planet.appendChild(planetImg);
+            
+            // Click para abrir galería
+            planet.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openGallery(name, photoStart, photoEnd);
+            });
+            
+            planetOrbitContainer.appendChild(planet);
+            space.appendChild(planetOrbitContainer);
+        });
+
+        // Click en el sol
+        sun.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openGallery('Sol', 1, 1);
+        });
+
+        // Funciones de galería
+        function openGallery(planetName, start, end) {
+            modalPlanetName.textContent = `🪐 ${planetName}`;
+            galleryContent.innerHTML = '';
+            
+            for (let i = start; i <= end; i++) {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                
+                const img = document.createElement('img');
+                img.src = `fotos/foto${i}.jpg`;
+                img.onerror = function() {
+                    this.src = `fotos/foto${i}.png`;
+                };
+                img.alt = `Foto ${i}`;
+                
+                item.appendChild(img);
+                galleryContent.appendChild(item);
+            }
+            
+            galleryModal.classList.add('active');
+        }
+
+        function closeGallery() {
+            galleryModal.classList.remove('active');
+        }
+
+        // Cerrar galería al hacer click en el fondo
+        galleryModal.addEventListener('click', (e) => {
+            if (e.target === galleryModal) {
+                closeGallery();
+            }
+        });
+
+        // Funciones de vista
         function updateTransform() {
             space.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
         }
@@ -360,18 +633,18 @@
         }
 
         function zoomOut() {
-            scale = Math.max(scale / 1.2, 0.3);
+            scale = Math.max(scale / 1.2, 0.4);
             updateTransform();
         }
 
         function resetView() {
             scale = 1;
-            translateX = -2600;
-            translateY = -2600;
+            translateX = -2100;
+            translateY = -2100;
             updateTransform();
         }
 
-        // Mouse events
+        // Eventos de mouse
         container.addEventListener('mousedown', (e) => {
             isDragging = true;
             startX = e.clientX - translateX;
@@ -396,11 +669,11 @@
         container.addEventListener('wheel', (e) => {
             e.preventDefault();
             const delta = e.deltaY > 0 ? 0.9 : 1.1;
-            scale = Math.max(0.3, Math.min(5, scale * delta));
+            scale = Math.max(0.4, Math.min(5, scale * delta));
             updateTransform();
         });
 
-        // Touch events
+        // Eventos táctiles
         container.addEventListener('touchstart', (e) => {
             if (e.touches.length === 1) {
                 isDragging = true;
@@ -428,7 +701,7 @@
                 
                 if (lastDistance > 0) {
                     const delta = distance / lastDistance;
-                    scale = Math.max(0.3, Math.min(5, scale * delta));
+                    scale = Math.max(0.4, Math.min(5, scale * delta));
                     updateTransform();
                 }
                 
