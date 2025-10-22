@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <title>Sistema Solar - ¡Feliz Cumpleaños! 🎂</title>
     <style>
         * {
@@ -15,6 +15,10 @@
             overflow: hidden;
             background: #000;
             font-family: 'Arial', sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            overscroll-behavior: none;
         }
 
         #container {
@@ -85,6 +89,7 @@
             animation: sunPulse 6s infinite ease-in-out;
             cursor: pointer;
             transition: transform 0.3s;
+            will-change: box-shadow;
         }
 
         #sun:hover {
@@ -143,6 +148,7 @@
             transform: translate(-50%, -50%);
             animation: orbit linear infinite;
             pointer-events: none;
+            will-change: transform;
         }
 
         @keyframes orbit {
@@ -158,6 +164,8 @@
             transition: all 0.3s ease;
             box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.5);
             pointer-events: auto;
+            will-change: transform;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .planet:hover {
@@ -795,12 +803,12 @@
             }
         };
 
-        // Crear estrellas
-        for (let i = 0; i < 350; i++) {
+        // Crear estrellas - REDUCIDAS PARA MÓVIL
+        for (let i = 0; i < 200; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            if (Math.random() > 0.6) star.classList.add('twinkle');
-            const size = Math.random() * 2.5 + 0.5;
+            if (Math.random() > 0.8) star.classList.add('twinkle');
+            const size = Math.random() * 2 + 0.5;
             star.style.width = size + 'px';
             star.style.height = size + 'px';
             star.style.left = Math.random() * 6000 + 'px';
@@ -818,16 +826,16 @@
             openPlanetModal('sol');
         });
 
-        // Configuración de planetas
+        // Configuración de planetas - VELOCIDADES MUY LENTAS PARA MÓVIL
         const planetsConfig = [
-            ['mercurio', 'mercury', 450, 88],
-            ['venus', 'venus', 600, 70],
-            ['tierra', 'earth', 750, 60],
-            ['marte', 'mars', 900, 48],
-            ['jupiter', 'jupiter', 1100, 26],
-            ['saturno', 'saturn', 1350, 18],
-            ['urano', 'uranus', 1600, 14],
-            ['neptuno', 'neptune', 1850, 10]
+            ['mercurio', 'mercury', 450, 120],
+            ['venus', 'venus', 600, 150],
+            ['tierra', 'earth', 750, 180],
+            ['marte', 'mars', 900, 210],
+            ['jupiter', 'jupiter', 1100, 240],
+            ['saturno', 'saturn', 1350, 270],
+            ['urano', 'uranus', 1600, 300],
+            ['neptuno', 'neptune', 1850, 330]
         ];
 
         // Crear planetas
@@ -871,34 +879,34 @@
             space.appendChild(planetOrbitContainer);
         });
 
-        // CREAR OBJETOS ESPACIALES ESPECIALES
+        // CREAR OBJETOS ESPACIALES ESPECIALES - VELOCIDADES MUY LENTAS
         const specialObjects = [
             {
                 key: 'cometa_familia',
                 className: 'comet',
                 orbitRadius: 1000,
-                speed: 35,
+                speed: 200,
                 angle: 45
             },
             {
                 key: 'asteroide_amigos',
                 className: 'asteroid',
                 orbitRadius: 1500,
-                speed: 20,
+                speed: 250,
                 angle: 135
             },
             {
                 key: 'satelite_hermanos',
                 className: 'satellite',
                 orbitRadius: 800,
-                speed: 40,
+                speed: 180,
                 angle: 225
             },
             {
                 key: 'nebulosa_suenos',
                 className: 'nebula',
                 orbitRadius: 1700,
-                speed: 15,
+                speed: 280,
                 angle: 315
             }
         ];
@@ -1037,8 +1045,12 @@
             updateTransform();
         });
 
-        // Eventos táctiles
+        // Eventos táctiles - OPTIMIZADO PARA MÓVIL
+        let touchStartTime = 0;
+        
         container.addEventListener('touchstart', (e) => {
+            touchStartTime = Date.now();
+            
             if (e.touches.length === 1) {
                 isDragging = true;
                 startX = e.touches[0].clientX - translateX;
@@ -1049,10 +1061,13 @@
                 const dy = e.touches[0].clientY - e.touches[1].clientY;
                 lastDistance = Math.sqrt(dx * dx + dy * dy);
             }
-        });
+        }, { passive: false });
 
         container.addEventListener('touchmove', (e) => {
-            e.preventDefault();
+            // Solo prevenir si es un gesto de zoom o movimiento largo
+            if (e.touches.length > 1 || isDragging) {
+                e.preventDefault();
+            }
             
             if (e.touches.length === 1 && isDragging) {
                 translateX = e.touches[0].clientX - startX;
@@ -1071,7 +1086,7 @@
                 
                 lastDistance = distance;
             }
-        });
+        }, { passive: false });
 
         container.addEventListener('touchend', (e) => {
             if (e.touches.length < 2) {
@@ -1080,7 +1095,7 @@
             if (e.touches.length === 0) {
                 isDragging = false;
             }
-        });
+        }, { passive: true });
 
         updateTransform();
     </script>
